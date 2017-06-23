@@ -86,9 +86,9 @@ class QuadRenderer():
 
     def render(self, frame):
         # The draw loop
+        # GLUT.glutSwapBuffers()
         TexFromArray(frame)
         GL.glDrawElements(GL.GL_TRIANGLES, 6, GL.GL_UNSIGNED_INT, None)
-        GLUT.glutSwapBuffers()
 
     def render_to_image(self, frame):
         self.render(frame)
@@ -110,14 +110,22 @@ if __name__ == "__main__":
                         help='Cube-map video total width')
     parser.add_argument('--height', type=int, default=512 * 2, dest='height',
                         help='Cube-map video total height')
-
     args = parser.parse_args()
 
-    vid = imageio.get_reader(args.input, 'ffmpeg')
-    fps = vid.get_meta_data()["fps"]
+    reader = imageio.get_reader(args.input)
+    metadata = reader.get_meta_data()
 
     renderer = QuadRenderer((args.width, args.height))
-    with imageio.get_writer(args.output, fps=fps) as video_writer:
-        for i, frame in enumerate(vid):
+    if "fps" in metadata:
+        # Handle videos
+        fps = metadata["fps"]
+        with imageio.get_writer(args.output, fps=fps) as video_writer:
+            for i, frame in enumerate(reader):
+                img = renderer.render_to_image(np.asarray(frame))
+                video_writer.append_data(img)
+    else:
+        # Handle images
+        with imageio.get_writer(args.output) as writer:
+            frame = reader.get_data(0)
             img = renderer.render_to_image(np.asarray(frame))
-            video_writer.append_data(img)
+            writer.append_data(img)
