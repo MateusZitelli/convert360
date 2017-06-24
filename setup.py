@@ -9,4 +9,9 @@ setup(name='convert360',
       license='GPLv3',
       packages=['convert360'],
       zip_safe=True,
+      install_requires=[
+          'imageio',
+          'PyOpenGL',
+          'PyOpenGL_Accelerate',
+      ],
       scripts=['bin/convert360'])
