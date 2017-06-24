@@ -1,6 +1,7 @@
 __pycache__
 .ropeproject
 
+env
 *.mp4
 *.jpg
-env
+*.png
