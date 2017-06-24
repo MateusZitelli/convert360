@@ -1,12 +1,12 @@
 <h1 align="center">
 Convert360 🌎
 <br/>
-<i>360 degree media toolkit.</i>
+<i>360 degree media toolkit (WIP).</i>
 <br/>
-<img width=150 src="https://cdn.rawgit.com/MateusZitelli/convert360/master/mercator.jpg" ></img>
+<img width=150 src="https://raw.githubusercontent.com/MateusZitelli/convert360/master/assets/mercator.jpg" ></img>
 </h1>
 
-GPU accelerated command line tool to convert 360 images and videos between different projections.
+> GPU accelerated command line tool to convert 360 images and videos between different projections.
 
 ### Supported Convertions
 

@@ -1,14 +1,15 @@
 import imageio
+from tqdm import tqdm
 from convert360.projector import get_projector
 
 
-def render_video(renderer, reader, writer):
-    for i, frame in enumerate(reader):
+def render_many(renderer, reader, writer, total=None):
+    for i, frame in tqdm(enumerate(reader), total=total):
         img = renderer.render_to_image(frame)
         writer.append_data(img)
 
 
-def render_image(renderer, reader, writer):
+def render_single(renderer, reader, writer):
     frame = reader.get_data(0)
     img = renderer.render_to_image(frame)
     writer.append_data(img)
@@ -24,9 +25,14 @@ def main(input_path, output_path, size, input_type, output_type):
 
     with projector(output_size) as renderer:
         writer_args = {}
+        frames = 1
         if 'fps' in metadata:
             # Handle videos
             writer_args['fps'] = metadata['fps']
+            frames = metadata['nframes']
 
         with imageio.get_writer(output_path, **writer_args) as writer:
-            render_video(renderer, reader, writer)
+            if frames > 1:
+                render_many(renderer, reader, writer, frames)
+            else:
+                render_single(renderer, reader, writer)

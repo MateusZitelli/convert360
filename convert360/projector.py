@@ -1,4 +1,3 @@
-import os
 import numpy as np
 
 from OpenGL import GL
@@ -13,6 +12,7 @@ def tex_from_array(img_data):
     sx, sy = img_data_array.shape[:2]
     GL.glTexImage2D(GL.GL_TEXTURE_2D, 0, GL.GL_RGB, sy, sx, 0, GL.GL_RGB,
                     GL.GL_UNSIGNED_BYTE, img_data_array)
+
 
 PLAIN_VERTEX_SHADER = """
 #version 320 es
