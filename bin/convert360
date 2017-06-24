@@ -4,8 +4,8 @@ import convert360
 import argparse
 
 if __name__ == "__main__":
-    parser = argparse.ArgumentParser(description= 'Cube-map to equiretangular \
-                                     conversor.')
+    parser = argparse.ArgumentParser(description= '360 media reprojection \
+toolbox.')
     parser.add_argument('-i', '--input', type=str, required=True,
                         metavar='FILE', dest='input',
                         help='Equiretangular video to be converted.')
@@ -18,11 +18,11 @@ if __name__ == "__main__":
     parser.add_argument('-it', '--input-type', type=str,
                         default='equirectangular', choices=['equirectangular'],
                         metavar='TYPE', dest='input_type',
-                        help='Cube faces size in pixels.')
+                        help='Input video projection type.')
     parser.add_argument('-ot', '--output-type', type=str,
                         default='cubemap', choices=['cubemap'],
                         metavar='TYPE', dest='output_type',
-                        help='Cube faces size in pixels.')
+                        help='Output video projection type.')
     args = parser.parse_args()
 
     convert360.main(args.input, args.output, args.size, args.input_type,

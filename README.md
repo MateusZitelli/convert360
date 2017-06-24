@@ -45,6 +45,15 @@ optional arguments:
 ```
 
 
+## Example
+
+```sh
+$ convert360 -i ~/Pictures/Barcelona/sagrada-familia.jpg -o example.png -s 300 300
+```
+
+<img width=150 src="https://raw.githubusercontent.com/MateusZitelli/convert360/master/assets/example.png" ></img>
+
+
 ## Licence
 
 [GPLv3 License](https://opensource.org/licenses/GPL-3.0)
