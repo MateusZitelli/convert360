@@ -16,7 +16,7 @@ Convert360 🌎
 
 ## Setup
 
-Convert360 is available as a pip package.
+*Convert360* is available as a pip package and **requires FFMpeg**.
 
 ```sh
 pip install convert360
@@ -39,9 +39,9 @@ optional arguments:
   -s WIDTH HEIGHT, --size WIDTH HEIGHT
                         Cube faces size in pixels.
   -it TYPE, --input-type TYPE
-                        Cube faces size in pixels.
+                        Input projection type.
   -ot TYPE, --output-type TYPE
-                        Cube faces size in pixels.
+                        Output projection type.
 ```
 
 
@@ -51,7 +51,7 @@ optional arguments:
 $ convert360 -i ~/Pictures/Barcelona/sagrada-familia.jpg -o example.png -s 300 300
 ```
 
-<img width=150 src="https://raw.githubusercontent.com/MateusZitelli/convert360/master/assets/example.png" ></img>
+<img width=900 src="https://raw.githubusercontent.com/MateusZitelli/convert360/master/assets/example.png" ></img>
 
 
 ## Licence
