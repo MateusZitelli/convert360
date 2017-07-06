@@ -15,7 +15,7 @@ def tex_from_array(img_data):
 
 
 PLAIN_VERTEX_SHADER = """
-#version 320 es
+#version 120
 precision highp float;
 layout(location = 0) in vec3 position;
 layout(location = 1) in vec2 texCoord;
@@ -27,7 +27,7 @@ void main()
 } """
 
 CUBEMAP_FRAGMENT_SHADER = """
-#version 320 es
+#version 120
 #define M_PI 3.141592653589
 
 precision highp float;
