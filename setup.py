@@ -12,7 +12,7 @@ setup(name='convert360',
       install_requires=[
           'imageio',
           'PyOpenGL',
-          'PyOpenGL_Accelerate',
+          # 'PyOpenGL_Accelerate==3.0.2',
           'tqdm'
       ],
       scripts=['bin/convert360'])

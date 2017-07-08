@@ -16,10 +16,9 @@ def tex_from_array(img_data):
 
 PLAIN_VERTEX_SHADER = """
 #version 120
-precision highp float;
-layout(location = 0) in vec3 position;
-layout(location = 1) in vec2 texCoord;
-out vec2 texCoordOut;
+attribute vec3 position;
+attribute vec2 texCoord;
+varying vec2 texCoordOut;
 void main()
 {
     gl_Position = vec4(position, 1.0);
@@ -30,9 +29,7 @@ CUBEMAP_FRAGMENT_SHADER = """
 #version 120
 #define M_PI 3.141592653589
 
-precision highp float;
-out vec4 outputColor;
-in vec2 texCoordOut;
+varying vec2 texCoordOut;
 uniform vec4 quaternion;
 uniform sampler2D BaseImage;
 
@@ -54,8 +51,7 @@ mat3 constructCompleteRotation(vec3 a)
       -cos(a.x) * sin(a.y),
       sin(a.y) * sin(a.z),
       sin(a.y) * cos(a.z),
-      cos(a.y)
-      );
+      cos(a.y));
 }
 
 int get_face(vec2 uv){
@@ -65,7 +61,7 @@ int get_face(vec2 uv){
 }
 
 void main() {
-  vec2 uv = texCoordOut;
+  vec2 uv = texCoordOut / 2.0 + 0.5;
   vec2 faceCoord = uv * 2.0 - 1.0;
   int face = get_face(uv);
   vec3 latSphereCoord;
@@ -86,7 +82,7 @@ void main() {
   }
 
   latSphereCoord = vec3(1.0,
-                        faceCoord.x * 3.0 + 2.0 - float(face % 3) * 2.0,
+                        faceCoord.x * 3.0 + 2.0 - float(mod(face, 3)) * 2.0,
                         faceCoord.y * 2.0 - 1.0 + float(face / 3) * 2.0);
 
   float r = sqrt(latSphereCoord.x * latSphereCoord.x +
@@ -100,7 +96,7 @@ void main() {
   finalCoordenates.x = (invRotatedSphericalCoord.x) / (2.0 * M_PI);
   finalCoordenates.y = (invRotatedSphericalCoord.y) / (M_PI);
 
-  outputColor = texture(BaseImage, mod(finalCoordenates, 1.0));
+  gl_FragColor = texture2D(BaseImage, mod(finalCoordenates, 1.0));
 } """
 
 
@@ -163,9 +159,9 @@ class Equirectangular2Cubemap():
         # Create the VBO
         vertices = np.array([
             [1, 1, 0, 1, 1],
-            [1, -1, 0, 1, 0],
-            [-1, -1, 0, 0, 0],
-            [-1, 1, 0, 0, 1]], dtype='f')
+            [1, -1, 0, 1, -1],
+            [-1, -1, 0, -1, -1],
+            [-1, 1, 0, -1, 1]], dtype='f')
         self.vertexPositions = vbo.VBO(vertices)
 
         # Create the index buffer object
@@ -183,8 +179,6 @@ class Equirectangular2Cubemap():
     def clean(self):
         self.vertexPositions.delete()
         self.index_positions.delete()
-        GL.glDeleteTextures(self.texture)
-        GL.glDeleteTextures(self.texture)
 
 
 class ProjectorNotImplemented(Exception):
