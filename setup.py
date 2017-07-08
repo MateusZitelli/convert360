@@ -1,7 +1,7 @@
 from setuptools import setup
 
 setup(name='convert360',
-      version='0.1.1',
+      version='0.1.2',
       description='Tool to convert 360 videos between different projections.',
       url='https://github.com/MateusZitelli/convert360',
       author='Mateus Zitelli',
