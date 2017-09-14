@@ -10,7 +10,7 @@ Convert360 🌎
 
 ### Supported Convertions
 
-- [x] Equirectangular to Cube-map
+- [x] Equirectangular to (connected) cube-map
 - [ ] Cube-map to Equirectangular
 
 
@@ -52,6 +52,12 @@ $ convert360 -i ~/Pictures/Barcelona/sagrada-familia.jpg -o example.png -s 300 3
 ```
 
 <img width=900 src="https://raw.githubusercontent.com/MateusZitelli/convert360/master/assets/example.png" ></img>
+
+```sh
+$ convert360 -i ~/Pictures/Barcelona/sagrada-familia.jpg -o example.png -s 300 300 -ot connected-cubemap
+```
+
+<img width=900 src="https://raw.githubusercontent.com/MateusZitelli/convert360/master/assets/example2.png" ></img>
 
 
 ## Licence
