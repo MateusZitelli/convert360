@@ -30,8 +30,8 @@ CUBEMAP_FRAGMENT_SHADER = """
 #define M_PI 3.141592653589
 
 varying vec2 texCoordOut;
-uniform vec4 quaternion;
 uniform sampler2D BaseImage;
+uniform bool connected;
 
 vec2 flatToSpherical(vec3 flatCoord, float r)
 {
@@ -67,18 +67,34 @@ void main() {
   vec3 latSphereCoord;
   vec3 rot;
 
-  if(face == 0){
-    rot = vec3(-M_PI / 2.0, 0, 0);
-  }else if(face == 1){
-    rot = vec3(M_PI / 2.0, 0, 0);
-  }else if(face == 2){
-    rot = vec3(M_PI / 2.0, M_PI / 2.0, M_PI / 2.0);
-  }else if(face == 3){
-    rot = vec3(M_PI / 2.0, -M_PI / 2.0, M_PI / 2.0);
-  }else if(face == 4){
-    rot = vec3(M_PI, 0, 0);
-  }else if(face == 5){
-    rot = vec3(0, 0, 0);
+  if(connected){
+    if(face == 0){
+        rot = vec3(-M_PI / 2.0, 0, 0);
+    }else if(face == 1){
+        rot = vec3(0, 0, 0);
+    }else if(face == 2){
+        rot = vec3(M_PI / 2.0, 0, 0);
+    }else if(face == 3){
+        rot = vec3(0.0, -M_PI / 2.0, M_PI / 2.0);
+    }else if(face == 4){
+        rot = vec3(0.0, -M_PI / 2.0, M_PI);
+    }else if(face == 5){
+        rot = vec3(0.0, -M_PI / 2.0, M_PI * 3.0 / 2.0);
+    }
+  }else{
+    if(face == 0){
+        rot = vec3(-M_PI / 2.0, 0, 0);
+    }else if(face == 1){
+        rot = vec3(M_PI / 2.0, 0, 0);
+    }else if(face == 2){
+        rot = vec3(M_PI / 2.0, M_PI / 2.0, M_PI / 2.0);
+    }else if(face == 3){
+        rot = vec3(M_PI / 2.0, -M_PI / 2.0, M_PI / 2.0);
+    }else if(face == 4){
+        rot = vec3(M_PI, 0, 0);
+    }else if(face == 5){
+        rot = vec3(0, 0, 0);
+    }
   }
 
   latSphereCoord = vec3(1.0,
@@ -101,8 +117,9 @@ void main() {
 
 
 class Equirectangular2Cubemap():
-    def __init__(self, size=(1200, 900)):
+    def __init__(self, size=(1200, 900), connected=False):
         self.size = size
+        self.connected = connected
 
         GLUT.glutInit([])
         GLUT.glutInitDisplayMode(GLUT.GLUT_DOUBLE | GLUT.GLUT_RGB |
@@ -171,6 +188,9 @@ class Equirectangular2Cubemap():
         self.shader = shaders.compileProgram(self.vertex_shader,
                                              self.fragment_shader)
         self.create_texture()
+
+        uConnectedLoc = GL.glGetUniformLocation(self.shader, 'connected')
+        GL.glUniform1i(uConnectedLoc, 1 if self.connected else 0)
         return self
 
     def __exit__(self, type, value, traceback):
@@ -181,13 +201,19 @@ class Equirectangular2Cubemap():
         self.index_positions.delete()
 
 
+class Equirectangular2ConnectedCubemap(Equirectangular2Cubemap):
+    def __init__(self, size=(1200, 900)):
+        super(Equirectangular2ConnectedCubemap, self).__init__(size, connected=True)
+
+
 class ProjectorNotImplemented(Exception):
     pass
 
 
 projectors = {
     'equirectangular' : {
-        'cubemap' : Equirectangular2Cubemap
+        'cubemap' : Equirectangular2Cubemap,
+        'connected-cubemap' : Equirectangular2ConnectedCubemap,
     }
 }
 

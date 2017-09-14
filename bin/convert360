@@ -20,7 +20,7 @@ toolbox.')
                         metavar='TYPE', dest='input_type',
                         help='Input video projection type.')
     parser.add_argument('-ot', '--output-type', type=str,
-                        default='cubemap', choices=['cubemap'],
+                        default='cubemap', choices=['cubemap', 'connected-cubemap'],
                         metavar='TYPE', dest='output_type',
                         help='Output video projection type.')
     args = parser.parse_args()
